@@ -10,7 +10,7 @@ const itemClasses = classNames(
 
   return (
 <li className={itemClasses}
-onClick={() => props.setInterviewer(props.id)}>
+onClick={props.setInterviewer}>
   <img
     className="interviewers__item-image"
     src={props.avatar}
