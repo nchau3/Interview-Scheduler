@@ -13,6 +13,21 @@ export function getAppointmentsForDay(state, day){
   return appointmentsForDay;
 }
 
+export function getInterviewersForDay(state, day){
+  const { days, interviewers } = state;
+  let interviewersForDay = [];
+  for (let d of days) {
+    if (d.name === day) {
+      Object.values(interviewers).forEach((interviewer) => {
+        if (d.interviewers.includes(interviewer.id)) {
+          interviewersForDay.push(interviewer);
+        }
+      });
+    }
+  }
+  return interviewersForDay;
+}
+
 export function getInterview(state, interview){
   if (!interview) {
     return null
