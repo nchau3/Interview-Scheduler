@@ -23,6 +23,45 @@ export function useApplicationData(){
     })
   }, []);
 
+  function updateSpots(id, option){
+    const updateDays = [...state.days];
+    const { appointments } = state;
+
+    let spotsRemaining = 0;
+    let dayIndex = '';
+    let appointmentBooked = false;
+    
+    //determine appointment create/edit (interview)
+    if (appointments[id].interview) {
+      appointmentBooked = true;
+    }
+
+    //find day by index
+    for (let day of updateDays) {
+      if (day.appointments.includes(id)) {
+        dayIndex = day.id - 1;
+        if (option === "book") {
+          if (appointmentBooked) {
+            spotsRemaining = day.spots;
+          } else {
+            spotsRemaining = day.spots -1;
+          }
+        } else if (option === "cancel") {
+          spotsRemaining = day.spots + 1;
+        }
+      }
+    }
+    
+    const day = {
+      ...updateDays[dayIndex],
+      spots: spotsRemaining
+    }
+  
+    updateDays.splice(dayIndex, 1, day);
+  
+    return updateDays;
+  }
+
   //update API, show new appointment upon successful save
   function bookInterview(id, interview, transition) {
     const appointment = {
@@ -34,7 +73,11 @@ export function useApplicationData(){
       [id]: appointment
     };
     axios.put(`api/appointments/${id}`, appointment)
-    .then(() => setState({...state, appointments}))
+    .then(() => setState({
+      ...state, 
+      appointments, 
+      days: updateSpots(id, "book")
+    }))
     .then(() => transition("SHOW"))
     .catch((e) => {
       console.log(e);
@@ -53,7 +96,11 @@ export function useApplicationData(){
       [id]: appointment
     };
     axios.delete(`api/appointments/${id}`, appointment)
-    .then(() => setState({...state, appointments}))
+    .then(() => setState({
+      ...state,
+      appointments,
+      days: updateSpots(id, "cancel")
+    }))
     .then(() => transition("EMPTY"))
     .catch((e) => {
       console.log(e);
