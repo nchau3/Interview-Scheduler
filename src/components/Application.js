@@ -31,7 +31,11 @@ export default function Application() {
     };
     axios.put(`api/appointments/${id}`, appointment)
     .then(() => setState({...state, appointments}))
-    .then(() => transition("SHOW"));
+    .then(() => transition("SHOW"))
+    .catch((e) => {
+      console.log(e);
+      transition("ERROR_SAVE", true);
+    })
   }
 
   function cancelInterview(id, transition) {
@@ -45,7 +49,11 @@ export default function Application() {
     };
     axios.delete(`api/appointments/${id}`, appointment)
     .then(() => setState({...state, appointments}))
-    .then(() => transition("EMPTY"));
+    .then(() => transition("EMPTY"))
+    .catch((e) => {
+      console.log(e);
+      transition("ERROR_DELETE", true);
+    })
   }
 
   const schedule = dailyAppointments.map((appointment) => {
