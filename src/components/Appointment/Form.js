@@ -10,6 +10,7 @@ export default function Form(props) {
   const reset = () => {
     setStudent("");
     setInterviewer("");
+    setError("");
   }
 
   const cancel = () => {
@@ -28,6 +29,7 @@ export default function Form(props) {
       return;
     }
     
+    setError("");
     props.onSave(name, interviewer);
   }
 
