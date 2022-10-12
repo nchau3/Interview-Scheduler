@@ -1,5 +1,6 @@
 {
   "name": "scheduler",
+  "type": "module",
   "proxy": "http://localhost:8001",
   "version": "0.1.0",
   "private": true,
@@ -14,7 +15,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
+    "test": "react-scripts test --transformIgnorePatterns 'node_modules/(?!@codemirror)/'",
     "eject": "react-scripts eject",
     "storybook": "start-storybook -p 9009 -s public --ci",
     "build-storybook": "build-storybook -s public"
